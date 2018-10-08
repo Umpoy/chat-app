@@ -52,7 +52,7 @@
     </style>
 </head>
 
-<body>
+<body onbeforeunload="return unLoad()">
     <ul id="messages"></ul>
     <form action="">
         <input id="m" autocomplete="off" />
@@ -61,9 +61,23 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-        var person = prompt("Please enter a name that everyone will see you as.");
+        window.onbeforeunload = function (e) {
+            alert();
+        }
         $(function () {
+            var person = prompt("Please enter a name that everyone will see you as.");
             var socket = io();
+            socket.emit('connected', person);
+            socket.on('connected', function (person) {
+                $('#messages').append($('<li>').text(person + ' has connected to the room!'));
+            });
+
+            socket.emit('disconnect', person);
+            socket.on('disconnect', function (person) {
+                $('#messages').append($('<li>').text(person + ' has disconnected from the room!'));
+            });
+
+
             $('form').submit(function () {
                 socket.emit('chat message', person + ': ' + $('#m').val());
                 $('#m').val('');
