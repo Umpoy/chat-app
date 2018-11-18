@@ -73,8 +73,8 @@
             });
 
             socket.emit('disconnect');
-            socket.on('disconnect', () => {
-                $('#messages').append($('<li>').text('A user has disconnected from the room!'));
+            socket.on('disconnect', (user) => {
+                $('#messages').append($('<li>').text(user + ' has disconnected from the room!'));
             });
 
             $('#m').on('keypress', () => {
@@ -83,7 +83,6 @@
                     console.log(hello);
                 })
             })
-
 
             $('form').submit(() => {
                 socket.emit('chat message', person + ': ' + $('#m').val());
