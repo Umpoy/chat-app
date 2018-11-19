@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var user = {}
+var users = {}
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -15,11 +15,13 @@ io.on('connection', socket => {
         name = String(person)
         io.emit('connected', person);
         console.log('connect')
-        user[socket.id] = person
+        users[socket.id] = person
+        console.log(users)
     });
     socket.on('disconnect', () => {
-        io.emit('disconnect', user[socket.id]);
-        console.log(user)
+        io.emit('disconnect', users[socket.id]);
+        delete users[socket.id]
+        console.log(users);
     });
     socket.on('typing', () => {
         let hello = 'hello';
