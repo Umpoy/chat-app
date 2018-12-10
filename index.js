@@ -20,7 +20,7 @@ io.on('connection', socket => {
         users[socket.id] = person
         console.log(users)
     });
-    
+
     // socket.on('disconnect', () => {
     //     io.emit('disconnect', users[socket.id]);
     //     delete users[socket.id]
