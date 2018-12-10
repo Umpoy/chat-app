@@ -2,6 +2,11 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var users = {}
+
+
+
+
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -13,11 +18,10 @@ io.on('connection', socket => {
         io.emit('chat message', msg);
     });
 
-    socket.on('connected', person => {
-        name = String(person)
-        io.emit('connected', person);
+    socket.on('connected', name => {
+        io.emit('connected', name);
         console.log('connect')
-        users[socket.id] = person
+        users[socket.id] = name
         console.log(users)
     });
 
