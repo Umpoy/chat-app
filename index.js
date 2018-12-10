@@ -8,9 +8,11 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
     var name;
+
     socket.on('chat message', msg => {
         io.emit('chat message', msg);
     });
+
     socket.on('connected', person => {
         name = String(person)
         io.emit('connected', person);
@@ -18,15 +20,16 @@ io.on('connection', socket => {
         users[socket.id] = person
         console.log(users)
     });
-    socket.on('disconnect', () => {
-        io.emit('disconnect', users[socket.id]);
-        delete users[socket.id]
-        console.log(users);
-    });
-    socket.on('typing', () => {
-        let hello = 'hello';
-        io.emit('typing', hello);
-    });
+    
+    // socket.on('disconnect', () => {
+    //     io.emit('disconnect', users[socket.id]);
+    //     delete users[socket.id]
+    //     console.log(users);
+    // });
+    // socket.on('typing', () => {
+    //     let hello = 'hello';
+    //     io.emit('typing', hello);
+    // });
 
 });
 
