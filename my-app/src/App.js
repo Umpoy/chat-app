@@ -11,7 +11,9 @@ class App extends Component {
     this.state = {
       form: { name: '' },
       inLobby: false,
-      users: {}
+      users: {},
+      idKey: '',
+      words: []
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -19,7 +21,11 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    console.log('updated');
+
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
   }
 
   handleInputChange(event) {
@@ -37,10 +43,17 @@ class App extends Component {
     socket.emit('connected', person);
     socket.on('connected', person => {
       socket.on('grabUsers', (users) => {
-        this.setState({ users });
-        console.log(this.state.users)
+        console.log(users);
+        console.log(users[socket.id]);
+        this.setState({
+          users,
+          idKey: this.getKeyByValue(users, users[socket.id]),
+          words: users[socket.id].words
+        });
+        console.log(this.state)
       });
     });
+
     //this.state.
     this.loggedIn();
   }
@@ -53,6 +66,7 @@ class App extends Component {
 
   render() {
     const { name } = this.state.form
+
     if (!this.state.inLobby) {
       return (
         <div className="App">
@@ -67,7 +81,7 @@ class App extends Component {
       return (
         <div className="App">
           <h1> Welcome to the lobby {name}</h1>
-          <h3>Your words are: </h3>
+          <h3>Your words are: {this.state.words.join(' ')}</h3>
         </div>
       );
     }
