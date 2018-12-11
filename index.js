@@ -25,22 +25,21 @@ io.on('connection', socket => {
     // });
 
     socket.on('connected', name => {
-        // io.emit('connected', name);
-        // console.log('connect')
-        // users[socket.id] = { name }
-        // users[socket.id].words = wordsArray.splice(0, 3);
-        // console.log(wordsArray.length)
-        // console.log(users)
-        // io.emit('grabUsers', users);
-        console.log('connected: ', name);
+        io.emit('connected', name);
+        console.log('connected ', name)
+        users[socket.id] = { name }
+        users[socket.id].words = wordsArray.splice(0, 3);
+        console.log(wordsArray.length)
+        console.log(users)
+        io.emit('grabUsers', users);
 
     });
 
 
     socket.on('disconnect', () => {
-        // io.emit('disconnect', users[socket.id]);
-        // delete users[socket.id]
-        // console.log(users);
+        io.emit('disconnect', users[socket.id]);
+        delete users[socket.id]
+        console.log(users);
     });
     // socket.on('typing', () => {
     //     let hello = 'hello';
