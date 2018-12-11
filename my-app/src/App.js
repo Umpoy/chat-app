@@ -5,7 +5,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {
+      timestamp: 'no timestamp yet'
+    };
 
     subscribeToTimer((err, timestamp) => this.setState({
       timestamp
@@ -15,7 +17,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Hello World!!!</h1>
+        <p className="App-intro">
+          This is the timer value: {this.state.timestamp}
+        </p>
       </div>
     );
   }
