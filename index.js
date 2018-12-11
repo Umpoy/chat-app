@@ -35,7 +35,8 @@ io.on('connection', socket => {
         users[socket.id] = { name }
         users[socket.id].words = wordsArray.splice(0, 3);
         io.emit('grabUsers', users);
-        console.log(getKeyByValue(users, users[0]))
+        console.log('key: ', getKeyByValue(users, users[socket.id]));
+        usersArray.push(users[socket.id]);
     });
 
     // socket.on("start", (data) => {
@@ -49,16 +50,16 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
         io.emit('disconnect', users[socket.id]);
+
+
+        var index = usersArray.indexOf(users[socket.id]);
+        if (index > -1) {
+            usersArray.splice(index, 1);
+        }
+        // usersArray = [2, 9]
+        console.log(usersArray);
         delete users[socket.id]
-        console.log(users);
-        // var array = [2, 5, 9];
-        // console.log(array)
-        // var index = array.indexOf(5);
-        // if (index > -1) {
-        //     array.splice(index, 1);
-        // }
-        // // array = [2, 9]
-        // console.log(array);
+
     });
     // socket.on('typing', () => {
     //     let hello = 'hello';
