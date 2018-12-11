@@ -20,13 +20,18 @@
             const socket = io();
             socket.emit('connected', person);
             socket.on('connected', person => {
-                $('#messages').append($('<li>').text(person + ' has connected to the room!'));
+                socket.on('grabUsers', (users) => {
+                    console.log(users)
+                })
+
             });
 
             socket.emit('disconnect');
             socket.on('disconnect', (user) => {
                 $('#messages').append($('<li>').text(user + ' has disconnected from the room!'));
             });
+
+
 
             // $('#m').on('keypress', () => {
             //     socket.emit('typing');
