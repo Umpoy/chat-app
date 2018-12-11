@@ -10,7 +10,8 @@ class App extends Component {
 
     this.state = {
       form: { name: '' },
-      inLobby: false
+      inLobby: false,
+      users: {}
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -36,11 +37,12 @@ class App extends Component {
     socket.emit('connected', person);
     socket.on('connected', person => {
       socket.on('grabUsers', (users) => {
-        console.log(users)
+        this.setState({ users });
+        console.log(this.state.users)
       });
     });
+    //this.state.
     this.loggedIn();
-    console.log(this.state)
   }
 
   loggedIn() {
@@ -64,7 +66,8 @@ class App extends Component {
     } else {
       return (
         <div className="App">
-          Welcome to the lobby {name}
+          <h1> Welcome to the lobby {name}</h1>
+          <h3>Your words are: </h3>
         </div>
       );
     }
